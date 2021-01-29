@@ -1,1 +1,2 @@
 composer dumpautoload -o //instala dependências
+composer update //npm install

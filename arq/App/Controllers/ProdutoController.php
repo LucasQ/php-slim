@@ -39,11 +39,38 @@ class ProdutoController
 
     public function updateProdutos(Request $req, Response $res, array $args): Response
     {
+        $data = $req->getParsedBody();
+
+        $produtosDAO = new ProdutosDAO();
+        $produtoModel = new ProdutoModel();
+
+        $produtoModel->setLoja_id($data['loja_id'])
+            ->setNome($data['nome'])
+            ->setPreco($data['preco'])
+            ->setQuantidade($data['quantidade'])
+            ->setId($data['id']);
+
+        $produtosDAO->updateProdutos($produtoModel);
+
+        $res = $res->withJson([
+            'message' => "Produto {$data['nome']} atualizado com sucesso!"
+        ]);
+
         return $res;
     }
 
     public function deleteProdutos(Request $req, Response $res, array $args): Response
     {
+        $data = $req->getParsedBody();
+
+        $produtosDAO = new ProdutosDAO();
+
+        $produtosDAO->deleteProdutos($data['id']);
+
+        $res = $res->withJson([
+            'message' => "Produto id={$data['id']} excluído com sucesso"
+        ]);
+
         return $res;
     }
 }

@@ -15,6 +15,13 @@ final class ProdutoModel
         return $this->id;
     }
 
+    public function setId($id): ProdutoModel
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
     public function getLoja_id()
     {
         return $this->loja_id;

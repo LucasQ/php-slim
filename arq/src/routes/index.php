@@ -1,7 +1,10 @@
 <?php
 
-use App\Controllers\LojaController;
-use App\Controllers\ProdutoController;
+use App\Controllers\{
+    AuthController,
+    LojaController, 
+    ProdutoController
+};
 
 use function src\slimConfiguration;
 
@@ -17,5 +20,7 @@ $app->get('/produto', ProdutoController::class . ':getProdutos');
 $app->post('/produto', ProdutoController::class . ':insertProdutos');
 $app->put('/produto', ProdutoController::class . ':updateProdutos');
 $app->delete('/produto', ProdutoController::class . ':deleteProdutos');
+
+$app->post('/login', AuthController::class . ':login');
 
 $app->run();

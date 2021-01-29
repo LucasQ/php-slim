@@ -29,4 +29,29 @@ class ProdutosDAO extends Conexao
             'quantidade' => $produto->getQuantidade()
         ]);
     }
+
+    public function updateProdutos(ProdutoModel $produto)
+    {
+        $statement = $this->pdo->prepare('UPDATE produtos 
+            SET loja_id = :loja_id, nome = :nome,preco = :preco, quantidade = :quantidade
+            WHERE id = :id;');
+
+        $statement->execute([
+            'loja_id' => $produto->getLoja_id(),
+            'nome' => $produto->getNome(),
+            'preco' => $produto->getPreco(),
+            'quantidade' => $produto->getQuantidade(),
+            'id' => $produto->getId()
+        ]);
+    }
+
+    public function deleteProdutos(int $id) 
+    {
+        $statement = $this->pdo->prepare('DELETE FROM produtos
+            WHERE id = :id;');
+
+        $statement->execute([
+            'id' => $id
+        ]);
+    }
 }
