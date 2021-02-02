@@ -9,6 +9,7 @@ final class TokenModel
     private string $token;
     private string $refresh_token;
     private string $expired_at;
+    private int $active;
 
     public function getId(): int
     {
@@ -59,6 +60,18 @@ final class TokenModel
     public function setExpired_at($expired_at): TokenModel
     {
         $this->expired_at = $expired_at;
+
+        return $this;
+    }
+
+    public function getActive(): int
+    {
+        return $this->active;
+    }
+
+    public function setActive($active): TokenModel
+    {
+        $this->active = $active;
 
         return $this;
     }
