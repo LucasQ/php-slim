@@ -2,6 +2,7 @@
 
 use App\Controllers\{
     AuthController,
+    ExceptionController,
     LojaController, 
     ProdutoController
 };
@@ -24,11 +25,11 @@ $app->put('/produto', ProdutoController::class . ':updateProdutos');
 $app->delete('/produto', ProdutoController::class . ':deleteProdutos');
 
 $app->post('/login', AuthController::class . ':login');
-
 $app->post('/refresh_token', AuthController::class . ':refreshToken');
-
 $app->get('/teste', function(){ echo "ok"; })
     ->add(new JwtCheckDateMiddleware()) // 2º middleware - verifica a vailidade do token
     ->add(jwtAuth());// 1º middleware - verifica se o token enviado no header está com a chave secreta correta
+
+$app->get('/exception-test', ExceptionController::class . ':test');
 
 $app->run();
