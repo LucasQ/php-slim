@@ -16,12 +16,12 @@ class UsuariosDAO extends Conexao
     {
         $statement = $this->pdo->prepare('SELECT id, nome, email, senha FROM usuarios
             WHERE email = :email;');
-        
+
         $statement->bindParam('email', $email);
         $statement->execute();
         $usuarios = $statement->fetchAll(\PDO::FETCH_ASSOC);
 
-        if(count($usuarios) !== 0 ) {
+        if (count($usuarios) !== 0) {
             $usuario = new UsuarioModel();
             $usuario->setId($usuarios[0]['id'])
                 ->setEmail($usuarios[0]['email'])

@@ -42,7 +42,7 @@ class LojasDAO extends Conexao
             'telefone' => $loja->getTelefone(),
             'endereco' => $loja->getEndereco(),
             'id' => $loja->getId()
-        ]); 
+        ]);
     }
 
     public function deleteLoja(int $id)
@@ -53,6 +53,6 @@ class LojasDAO extends Conexao
 
         $statement->execute([
             'id' => $id
-        ]); 
+        ]);
     }
 }

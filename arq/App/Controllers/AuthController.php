@@ -6,8 +6,8 @@ use App\DAO\MySQL\GerenciadorLojas\TokensDAO;
 use App\DAO\MySQL\GerenciadorLojas\UsuariosDAO;
 use App\Models\MySQL\GerenciadorLojas\TokenModel;
 use Psr\Http\Message\ServerRequestInterface as Request;
-use \Slim\Http\Response as Response;
-use \Firebase\JWT\JWT;
+use Slim\Http\Response as Response;
+use Firebase\JWT\JWT;
 
 class AuthController
 {
@@ -18,11 +18,13 @@ class AuthController
 
         $usuario = $usuarioDAO->getUserByEmail($data['email']);
 
-        if(is_null($usuario))
+        if (is_null($usuario)) {
             return $res->withStatus(401);
+        }
 
-        if(!password_verify($data['senha'], $usuario->getSenha()))
+        if (!password_verify($data['senha'], $usuario->getSenha())) {
             return $res->withStatus(401);
+        }
 
         $expiredAt = (new \DateTime())->modify('+2 days')->format('Y-m-d H:i:s');
 
@@ -35,7 +37,7 @@ class AuthController
         $refreshTokenPayload = [
             'email' => $usuario->getEmail()
         ];
-        
+
         $token = JWT::encode($tokenPayload, getenv('JWT_SECRET_KEY'));
         $refreshToken = JWT::encode($refreshTokenPayload, getenv('JWT_SECRET_KEY'));
 
@@ -66,18 +68,20 @@ class AuthController
             $refreshToken,
             getenv('JWT_SECRET_KEY'),
             ['HS256']
-        ); 
+        );
 
         $existRefreshToken = $tokensDAO->verifyRefreshToken($refreshToken);
 
-        if(!$existRefreshToken) // 1º - verifica se o token existe no banco
+        if (!$existRefreshToken) { // 1º - verifica se o token existe no banco
             return $res->withStatus(401);
+        }
 
         $usuarioDAO = new UsuariosDAO();
         $usuario = $usuarioDAO->getUserByEmail($tokenDecoded->email);
-        
-        if(is_null($usuario)) // 2º - verifica se o usuario existe e pega os dados deles
+
+        if (is_null($usuario)) { // 2º - verifica se o usuario existe e pega os dados deles
             return $res->withStatus(401);
+        }
 
         $tokensDAO->inactivateToken($refreshToken);
 
@@ -92,19 +96,19 @@ class AuthController
             $refreshTokenPayload = [
                 'email' => $usuario->getEmail()
             ];
-            
+
             $token = JWT::encode($tokenPayload, getenv('JWT_SECRET_KEY'));
             $refreshToken = JWT::encode($refreshTokenPayload, getenv('JWT_SECRET_KEY'));
-    
+
             $tokenModel = new TokenModel();
             $tokenModel->setToken($token)
                 ->setRefresh_token($refreshToken)
                 ->setExpired_at($expiredAt)
                 ->setUsuarios_id($usuario->getId());
-    
+
             $tokenDAO = new TokensDAO();
             $tokenDAO->createToken($tokenModel); // 3º - gera o token, o refresh token e salva no banco
-    
+
             $res = $res->withJson([
                 'token' => $token,
                 'refresh_token' => $refreshToken

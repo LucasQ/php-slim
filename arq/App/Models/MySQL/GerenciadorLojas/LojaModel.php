@@ -17,7 +17,7 @@ final class LojaModel
     public function setId(int $id): LojaModel
     {
         $this->id = $id;
-        
+
         return $this;
     }
 
@@ -29,7 +29,7 @@ final class LojaModel
     public function setNome(string $nome): LojaModel
     {
         $this->nome = $nome;
-        
+
         return $this;
     }
 

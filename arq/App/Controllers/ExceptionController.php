@@ -7,7 +7,7 @@ use Exception;
 use InvalidArgumentException;
 use Throwable;
 use Psr\Http\Message\ServerRequestInterface as Request;
-use \Slim\Http\Response as Response;
+use Slim\Http\Response as Response;
 
 class ExceptionController
 {
@@ -18,7 +18,7 @@ class ExceptionController
             // throw new InvalidArgumentException("Faltou envio de senha.");
             throw new MyException("Testando custom exception");
             return $res->withJson(['msg' => 'ok']);
-        } catch(MyException $e) {
+        } catch (MyException $e) {
             return $res->withJson([
                 'error' => MyException::class,
                 'status' => 400,
@@ -27,7 +27,7 @@ class ExceptionController
                 'customFunction' => $e->customFunction(),
                 'trace' => $e->getMessage()
             ], 400);
-        } catch(InvalidArgumentException $e) {
+        } catch (InvalidArgumentException $e) {
             return $res->withJson([
                 'error' => InvalidArgumentException::class,
                 'status' => 400,
@@ -35,7 +35,7 @@ class ExceptionController
                 'userMessage' => 'É necessário enviar todos os dados para efetuar o login.',
                 'trace' => $e->getMessage()
             ], 400);
-        } catch(Exception | Throwable $e) { // Throwable é erro de codigo
+        } catch (Exception | Throwable $e) { // Throwable é erro de codigo
             return $res->withJson([
                 'error' => Exception::class,
                 'status' => 500,

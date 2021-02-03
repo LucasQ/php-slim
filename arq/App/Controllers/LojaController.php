@@ -5,7 +5,7 @@ namespace App\Controllers;
 use App\DAO\MySQL\GerenciadorLojas\LojasDAO;
 use App\Models\MySQL\GerenciadorLojas\LojaModel;
 use Psr\Http\Message\ServerRequestInterface as Request;
-use \Slim\Http\Response as Response;
+use Slim\Http\Response as Response;
 
 class LojaController
 {
@@ -50,7 +50,7 @@ class LojaController
         ->setEndereco($data['endereco'])
         ->setTelefone($data['telefone'])
         ->setId($data['id']);
-        
+
         $lojasDAO->updateLoja($loja);
 
         $res = $res->withJson([

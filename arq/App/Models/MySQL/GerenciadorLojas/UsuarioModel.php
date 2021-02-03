@@ -30,7 +30,7 @@ final class UsuarioModel
     public function setNome(string $nome): self
     {
         $this->nome = $nome;
-        
+
         return $this;
     }
 

@@ -41,7 +41,7 @@ class TokensDAO extends Conexao
     {
         $statement = $this->pdo->prepare('UPDATE tokens SET active = 0 
             WHERE refresh_token = :refresh_token;');
-        
+
         $statement->bindParam('refresh_token', $refreshToken);
         $statement->execute();
     }

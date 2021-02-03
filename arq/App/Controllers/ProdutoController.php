@@ -5,7 +5,7 @@ namespace App\Controllers;
 use App\DAO\MySQL\GerenciadorLojas\ProdutosDAO;
 use App\Models\MySQL\GerenciadorLojas\ProdutoModel;
 use Psr\Http\Message\ServerRequestInterface as Request;
-use \Slim\Http\Response as Response;
+use Slim\Http\Response as Response;
 
 class ProdutoController
 {
@@ -27,13 +27,13 @@ class ProdutoController
             ->setNome($data['nome'])
             ->setPreco($data['preco'])
             ->setQuantidade($data['quantidade']);
-        
+
         $produtosDAO->insertProdutos($produtoModel);
 
         $res = $res->withJson([
             'message' => 'Produto inserido com sucesso!'
         ]);
-        
+
         return $res;
     }
 

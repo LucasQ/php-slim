@@ -2,13 +2,13 @@
 
 namespace App\Models\MySQL\GerenciadorLojas;
 
-final class ProdutoModel 
+final class ProdutoModel
 {
     private int $id;
     private int $loja_id;
     private string $nome;
     private float $preco;
-    private int $quantidade;  
+    private int $quantidade;
 
     public function getId()
     {
@@ -69,4 +69,4 @@ final class ProdutoModel
 
         return $this;
     }
-} 
+}

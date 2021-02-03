@@ -2,7 +2,6 @@
 
 namespace App\DAO\MySQL\GerenciadorLojas;
 
-
 abstract class Conexao
 {
     /**
@@ -28,5 +27,4 @@ abstract class Conexao
             \PDO::ERRMODE_EXCEPTION
         );
     }
-    
 }
