@@ -5,32 +5,46 @@ namespace App\Controllers;
 use App\DAO\MySQL\GerenciadorLojas\LojasDAO;
 use App\Models\MySQL\GerenciadorLojas\LojaModel;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Slim\Container;
 use Slim\Http\Response as Response;
 
 class LojaController
 {
+    private LojasDAO $lojasDAO;
+
+    public function __construct(Container $container)
+    {
+        // container que tem todas as dependencias da aplicação
+        $this->lojasDAO = $container->offsetGet(LojasDAO::class);
+    }
+
     public function getLojas(Request $req, Response $res, array $args): Response
     {
-        $lojasDAO = new LojasDAO();
+        $lojas = $this->lojasDAO->getAllLojas();
 
-        $lojas = $lojasDAO->getAllLojas();
-        $res = $res->withJson($lojas);
+        $res->getBody()->write(
+            json_encode(
+                $lojas,
+                JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE
+            )
+        );
 
-        return $res;
+        return $res
+            ->withHeader('Content-Type', 'Application/json')
+            ->withStatus(200);
     }
 
     public function insertLojas(Request $req, Response $res, array $args): Response
     {
         $data = $req->getParsedBody();
 
-        $lojasDAO = new LojasDAO();
         $loja = new LojaModel();
 
         $loja->setNome($data['nome'])
             ->setEndereco($data['endereco'])
             ->setTelefone($data['telefone']);
 
-        $lojasDAO->insertLoja($loja);
+        $this->lojasDAO->insertLoja($loja);
 
         $res = $res->withJson([
             'message' => 'Loja inserida com sucesso!'
@@ -43,7 +57,6 @@ class LojaController
     {
         $data = $req->getParsedBody();
 
-        $lojasDAO = new LojasDAO();
         $loja = new LojaModel();
 
         $loja->setNome($data['nome'])
@@ -51,7 +64,7 @@ class LojaController
         ->setTelefone($data['telefone'])
         ->setId($data['id']);
 
-        $lojasDAO->updateLoja($loja);
+        $this->lojasDAO->updateLoja($loja);
 
         $res = $res->withJson([
             'message' => "Loja {$loja->getNome()} alterada com sucesso!"
@@ -64,9 +77,7 @@ class LojaController
     {
         $data = $req->getParsedBody();
 
-        $lojasDAO = new LojasDAO();
-
-        $lojasDAO->deleteLoja($data['id']);
+        $this->lojasDAO->deleteLoja($data['id']);
 
         $res = $res->withJson([
             'message' => "Loja id={$data['id']} excluida com sucesso"

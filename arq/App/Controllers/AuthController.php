@@ -32,7 +32,8 @@ class AuthController
             'sub' => $usuario->getId(),
             'name' => $usuario->getNome(),
             'email' => $usuario->getEmail(),
-            'expired_at' => $expiredAt
+            'exp' => (new \DateTime($expiredAt))->getTimestamp()
+            //biblioteca do jwt já verifica se a data está expirada por timestamp (exp)
         ];
         $refreshTokenPayload = [
             'email' => $usuario->getEmail()

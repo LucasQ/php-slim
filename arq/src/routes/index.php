@@ -6,7 +6,6 @@ use App\Controllers\{
     LojaController,
     ProdutoController
 };
-use App\Middlewares\JwtCheckDateMiddleware;
 
 use function src\jwtAuth;
 use function src\slimConfiguration;
@@ -29,7 +28,6 @@ $app->post('/refresh_token', AuthController::class . ':refreshToken');
 $app->get('/teste', function () {
     echo "ok";
 })
-    ->add(new JwtCheckDateMiddleware()) // 2º middleware - verifica a vailidade do token
     ->add(jwtAuth());// 1º middleware - verifica se o token enviado no header está com a chave secreta correta
 
 $app->get('/exception-test', ExceptionController::class . ':test');
